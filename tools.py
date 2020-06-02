@@ -1,80 +1,52 @@
 '''
 filename: tools.py
-content: 
-    definition of activition functions
-    loss function
-    derivative of activation functions
-    something to do with splitting dataset
+content: some useful tools
 '''
-
 import numpy as np
+from scipy import sparse
 
-def sigmoid(X):
-    return 1/(1+np.exp(-X))
-
-def tanh(X):
-    return np.tanh(X)
-
-def relu(X):
-    # 0-infinity y=x, else y=0
-    return np.clip(X, 0, np.finfo(X.dtype).max)
-
-def softmax(X):
-    X = np.exp(X)
-    X /= np.sum(X)
-    return X
-
-def inplace_dsigmoid(Z ,delta):
+def gen_batches(n, batch_size, min_batch_size=0):
     '''
-    INPUT
-    Z: output of former activation function
-    delta: array waited to be updated
+    Generator to create slices containing batch_size elements
+    n : num of batches
+    batch_size : Number of element in each batch
+    min_batch_size : Minimum batch size to produce
 
-    derivative: Z*(1-Z)
-    inplace change for delta
+    yield slice
     '''
-    delta *= Z
-    delta *= (1-Z)
+    start = 0
+    for _ in range(int(n // batch_size)):
+        end = start + batch_size
+        if end + min_batch_size > n:
+            continue
+        yield slice(start, end)
+        start = end
+    if start < n:
+        yield slice(start, n)
 
-def inplace_dtanh(Z, delta):
+def sparse_dot(a, b):
     '''
-    INPUT
-    Z: output of former activation function
-    delta: array waited to be updated
-    
-    derivative:1-Z^2
-    inplace change for delta
+    dot product for sparse matrix
     '''
-    delta *= (1 - Z ** 2)
-
-def inplace_drelu(Z, delta):
-    '''
-    INPUT
-    Z: output of former activation function
-    delta: array waited to be updated
-
-    derivative: 0 for x==0 and 1 for x>0
-    inplace change for delta
-    '''
-    # Z==0 returns an array of bool type
-    delta[Z==0] = 0
-
-def squared_loss(y_true, y_pred):
-    '''
-    loss function
-    sum((y_true-y_pred)^2)/2n
-    '''
-    return np.mean((y_true-y_pred)**2)/2
-
-ACTIVATIONS = {"relu": relu, 
-               "tanh":tanh, 
-               "sigmoid": sigmoid, 
-               "softmax": softmax}
-DERIVATIVES = {"relu": inplace_drelu, 
-               "tanh": inplace_dtanh,
-               "sigmoid": inplace_dsigmoid}
-
-LOSS = {"squared_loss": squared_loss}
+    if a.ndim>2 or b.ndim>2:
+        if sparse.issparse(a):
+            # dim(b)>2
+            # 滚动轴
+            b_ = np.rollaxis(b, -2)
+            b_2d = b_.reshape((b.shape[-2], -1))
+            # 矩阵乘法
+            ret = a@b_2d
+            ret = ret.reshape(a.shape[0], *b_.shape[1:])
+        elif sparse.issparse(b):
+            # dim(a)>2
+            a_2d = a.reshape(-1, a.shape[-1])
+            ret = a_2d@b
+            ret = ret.reshape(*a.shape[:-1], b.shape[1])
+        else:
+            ret = np.dot(a, b)
+    else:
+        ret = a@b
+    return ret
 
 def train_test_split(X, y, test_size):
     #TODO
@@ -84,6 +56,6 @@ class KFold:
     def __init__(self):
         #TODO
         pass
-    
+
     def split(self, X):
         pass
