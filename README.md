@@ -8,7 +8,7 @@ Implementation of neural networks for machine learning team project for AM218 sp
 
 Python 3.7
 
-Required packages: numpy, pandas, scipy
+Required packages: numpy, pandas, scipy, matplotlib
 
 ```python
 pip3 install -r requirements.txt
@@ -30,10 +30,14 @@ Running the **main.py** file in the project, you can get some results shown belo
     - some useful tools
 - networks.py
     - definition of NeuralNetworkClassifier
+- preprocess.py
+    - preprocess data to required format
 - _solver.py
     - definition of AdamOptimizer
 - _functions.py
     - definition of activation function and loss function
+
+---
 
 ### Contributor
 

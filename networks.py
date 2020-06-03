@@ -202,9 +202,10 @@ class BasePerceptron:
                 # 生成切片
                 for batch_slice in gen_batches(n_samples, batch_size):
                     # activations [X]+[None]*(len(layer_units)-1)
-                    activations[0] = X[batch_size]
+                    activations[0] = X[batch_slice]
+
                     batch_loss, coef_grads, intercept_grads = self._backprop(
-                        X[batch_size], y[batch_size], activations, deltas,
+                        X[batch_slice], y[batch_slice], activations, deltas,
                         coef_grads, intercept_grads)
                     accumulated_loss += batch_loss*(batch_slice.stop-
                                                     batch_slice.start)

@@ -4,6 +4,7 @@ content: some useful tools
 '''
 import numpy as np
 from scipy import sparse
+from random import seed, choices
 
 def gen_batches(n, batch_size, min_batch_size=0):
     '''
@@ -42,6 +43,7 @@ def accuracy_score(y_true, y_pred, normalize=True):
     else:
         return score
 
+
 def sparse_dot(a, b):
     '''
     dot product for sparse matrix
@@ -66,9 +68,22 @@ def sparse_dot(a, b):
         ret = a@b
     return ret
 
-def train_test_split(X, y, test_size):
-    #TODO
-    pass
+def train_test_split(X, y, test_size=0.3):
+    '''
+    split X y into training set and test set
+    return
+        X_train, X_test, y_train, y_test
+    '''
+    if y.ndim == 1:
+        y = np.reshape(y, (-1,1))
+    n_features = X.shape[1]
+    data = np.hstack((X, y))
+    np.random.shuffle(data)
+    n_test = int(np.floor(test_size*len(y)))
+    X_test, y_test = data[:n_test, :n_features], data[:n_test, n_features:]
+    X_train, y_train = data[n_test:, :n_features], data[n_test:, n_features:]
+    return X_train, X_test, y_train, y_test
+
 
 class KFold:
     def __init__(self):
@@ -77,3 +92,14 @@ class KFold:
 
     def split(self, X):
         pass
+
+if __name__ == "__main__":
+    X = np.array([np.arange(i,i+5) for i in range(100)])
+    y = np.arange(100)
+    print(X.ndim)
+    print(y.ndim)
+    X1, X2, y1, y2 = train_test_split(X, y, test_size=0.3)
+    print(len(X1))
+    print(len(X2))
+    print(y1)
+    print(y2)
