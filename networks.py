@@ -210,6 +210,7 @@ class BasePerceptron:
                                                     batch_slice.start)
                     #update weights
                     grads = coef_grads + intercept_grads
+                    #learning rate also updated
                     self._solver.update_params(grads)
 
                 self.n_iter_ += 1
@@ -222,19 +223,11 @@ class BasePerceptron:
                 # update no improvement count
                 self._update_no_improvement_count(X_val, y_val)
 
-                # update learning rate
-                self._solver.iteration_ends(self.t_)
-
                 if self._no_improvement_count>self.n_iter_no_change:
                     # stop or decrease learning rate
                     msg = ("Loss did not improve more than %f for %d consecutive epochs"%(
                         self.tol, self.n_iter_no_change))
-
-                    is_stop = self._solver.trigger_stopping(msg)
-                    if is_stop:
-                        break
-                    else:
-                        self._no_improvement_count = 0
+                    print(msg," Stopping")
 
                 if self.n_iter_ == self.max_iter:
                     print("Maximum iterations %d reached and not converged"%self.max_iter)
@@ -319,9 +312,41 @@ class NeuralNetworkClassifier(BasePerceptron):
     n_iter_no_change: max number of iterations to not meet acquired tol improvement
     '''
     def __init__(self, hidden_layer_sizes=(100,), activation="sigmoid",
-                solver="adam", alpha=0.0001, batch_size='auto', learning_rate='constant')
+                 out_activation="softmax", learning_rate=0.001, max_iter=200,
+                 tol=1e-4, loss="squared_loss", solver="adam", 
+                 batch_size="auto", alpha=0.0001, beta1=0.9, 
+                 beta2=0.999, epsilon=1e-8, n_iter_no_change=10):
+        super().__init__(hidden_layer_sizes=hidden_layer_sizes, 
+                         activation=activation,
+                         out_activation=out_activation, 
+                         learning_rate=learning_rate,
+                         max_iter=max_iter, tol=tol,
+                         loss=loss, solver=solver,
+                         batch_size=batch_size, alpha=alpha,
+                         beta1=beta1, beta2=beta2, epsilon=epsilon,
+                         n_iter_no_change=n_iter_no_change)
 
-   def __init__(self, hidden_layer_sizes, activation, 
-                out_activation, learning_rate, max_iter, tol,
-                loss, solver, batch_size, alpha, beta1, beta2, epsilon,
-                n_iter_no_change):
+    def predict(self, X):
+        '''
+        predict X
+        return:
+            an array of labels
+            for multi outputs--return the index with highest value
+        '''
+        y_pred = self._predict(X)
+        if self.n_outputs == 1:
+            y_pred = y_pred.ravel()
+        else:
+            # 选取概率最高的返回index值
+            y_pred = predict_transform(y_pred)
+        return y_pred
+
+
+def predict_transform(y):
+    '''
+    transformation of multi outputs
+    pick the node with highest value
+    return index
+    '''
+    return np.array([np.argmax(row) for row in y])
+

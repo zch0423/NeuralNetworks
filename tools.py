@@ -24,6 +24,24 @@ def gen_batches(n, batch_size, min_batch_size=0):
     if start < n:
         yield slice(start, n)
 
+def accuracy_score(y_true, y_pred, normalize=True):
+    '''
+    accuracy score
+    normalize
+        True: return proportion
+        False: return number of accurate predict
+    '''
+    score = 0
+    if(len(y_true)!=len(y_pred)):
+        raise ValueError("y_true and y_pred have different length")
+    for i in range(len(y_true)):
+        if y_pred[i]==y_true[i]:
+            score += 1
+    if normalize:
+        return score/len(y_pred)
+    else:
+        return score
+
 def sparse_dot(a, b):
     '''
     dot product for sparse matrix
