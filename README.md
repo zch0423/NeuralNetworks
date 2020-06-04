@@ -36,6 +36,8 @@ Running the **main.py** file in the project, you can get some output like:
     - definition of NeuralNetworkClassifier
 - preprocess.py
     - preprocess data to required format
+- visualization.py
+    - functions for visualization of the results
 - _solver.py
     - definition of AdamOptimizer
 - _functions.py
