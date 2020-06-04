@@ -84,6 +84,15 @@ def train_test_split(X, y, test_size=0.3):
     X_train, y_train = data[n_test:, :n_features], data[n_test:, n_features:]
     return X_train, X_test, y_train, y_test
 
+def array2Label(y):
+    '''
+    transform a 2d array of multi output y into a 1d array
+    for example y = [[0,1,0],[0,0,1],[1,0,0]]
+    y_label = [1, 2, 0]  represents the index of 1 in the row
+    already assure y only has one nonzero value for each row
+    '''
+    row, col = np.nonzero(y)
+    return col
 
 class KFold:
     def __init__(self):
@@ -94,12 +103,15 @@ class KFold:
         pass
 
 if __name__ == "__main__":
-    X = np.array([np.arange(i,i+5) for i in range(100)])
-    y = np.arange(100)
-    print(X.ndim)
-    print(y.ndim)
-    X1, X2, y1, y2 = train_test_split(X, y, test_size=0.3)
-    print(len(X1))
-    print(len(X2))
-    print(y1)
-    print(y2)
+    # X = np.array([np.arange(i,i+5) for i in range(100)])
+    # y = np.arange(100)
+    # print(X.ndim)
+    # print(y.ndim)
+    # X1, X2, y1, y2 = train_test_split(X, y, test_size=0.3)
+    # print(len(X1))
+    # print(len(X2))
+    # print(y1)
+    # print(y2)
+    y_ = np.array([[1,0,0,0,0],[0,1,0,0,0],[0,0,0,0,1],[0,0,1,0,0],[1,0,0,0,0]])
+    print("test11")
+    print(array2Label(y_))

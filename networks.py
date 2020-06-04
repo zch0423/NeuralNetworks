@@ -229,7 +229,7 @@ class BasePerceptron:
                     msg = ("Loss did not improve more than %f for %d consecutive epochs"%(
                         self.tol, self.n_iter_no_change))
                     print(msg," Stopping")
-
+                    break  # terminate
                 if self.n_iter_ == self.max_iter:
                     print("Maximum iterations %d reached and not converged"%self.max_iter)
         except KeyboardInterrupt:

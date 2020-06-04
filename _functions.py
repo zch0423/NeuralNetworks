@@ -21,7 +21,9 @@ def relu(X):
 
 def softmax(X):
     X = np.exp(X)
-    X /= np.sum(X)
+    temp = np.sum(X, axis=1)
+    for i in range(len(temp)):
+        X[i] /= temp[i]
     return X
 
 def inplace_dsigmoid(Z ,delta):

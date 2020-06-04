@@ -20,7 +20,11 @@ pip3 install -r requirements.txt
 
 Before running, make sure that the csv file of dataset has the corrent path in the project.
 
-Running the **main.py** file in the project, you can get some results shown below.
+Running the **main.py** file in the project, you can get some output like:
+
+<img src="/Users/zch/Library/Application Support/typora-user-images/image-20200604233841151.png" alt="image-20200604233841151" style="zoom:50%;" />
+
+---
 
 ### Files
 
@@ -52,5 +56,5 @@ Running the **main.py** file in the project, you can get some results shown belo
 - Contributors of scikit-sklearn, who provide enlightment in structure design
 - Kingma, Diederik and Jimmy Ba, who introduced the method of adaptive  moment estimation
 - Xavier Glorot and Yoshua Bengio, who introduced the Glorot initialization method
-- Whoever helped me when developing the model.
+- Whoever helped when developing the model
 
