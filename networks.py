@@ -29,12 +29,13 @@ class BasePerceptron:
     epsilon  parameters for ADAM algorithm
 
     n_iter_no_change: max number of iterations to not meet acquired tol improvement
+    prompt: bool whether to print info
     '''
 
     def __init__(self, hidden_layer_sizes, activation, 
                 out_activation, learning_rate, max_iter, tol,
                 loss, solver, batch_size, alpha, beta1, beta2, epsilon,
-                n_iter_no_change):
+                n_iter_no_change, prompt):
         self.hidden_layer_sizes = hidden_layer_sizes  # like(100, )
         self.activation = activation
         self.out_activation = out_activation
@@ -49,6 +50,7 @@ class BasePerceptron:
         self.beta2 = beta2
         self.epsilon = epsilon
         self.n_iter_no_change = n_iter_no_change
+        self.prompt = prompt
 
     def _initialize(self, y, layer_units):
         # initialize parameters--allocate weights
@@ -219,16 +221,18 @@ class BasePerceptron:
                 self.t_ += n_samples
                 self.loss_curve_.append(self.loss_)
                 # test output
-                print("Iteration %d,loss=%.8f"%(self.n_iter_, self.loss_))
+                if self.prompt:
+                    print("Iteration %d,loss=%.8f"%(self.n_iter_, self.loss_))
 
                 # update no improvement count
                 self._update_no_improvement_count(X_val, y_val)
 
                 if self._no_improvement_count>self.n_iter_no_change:
                     # stop or decrease learning rate
-                    msg = ("Loss did not improve more than %f for %d consecutive epochs"%(
+                    if self.prompt:
+                        msg = ("Loss did not improve more than %f for %d consecutive epochs"%(
                         self.tol, self.n_iter_no_change))
-                    print(msg," Stopping")
+                        print(msg," Stopping")
                     break  # terminate
                 if self.n_iter_ == self.max_iter:
                     print("Maximum iterations %d reached and not converged"%self.max_iter)
@@ -293,7 +297,7 @@ class NeuralNetworkClassifier(BasePerceptron):
     inherited from BasePerceptron 
 
     parameters
-    hidden_layer_sizes: (100, )
+    hidden_layer_sizes: like (100, )
     activation: activation function--relu sigmoid softmax tanh
     out_activation: activation function for output--here is softmax
     learning_rate: learning rate for update
@@ -311,12 +315,13 @@ class NeuralNetworkClassifier(BasePerceptron):
     epsilon  parameters for ADAM algorithm
 
     n_iter_no_change: max number of iterations to not meet acquired tol improvement
+    prompt: bool whether to print information
     '''
-    def __init__(self, hidden_layer_sizes=(100,), activation="sigmoid",
+    def __init__(self, hidden_layer_sizes=(30, 30), activation="relu",
                  out_activation="softmax", learning_rate=0.001, max_iter=200,
                  tol=1e-4, loss="squared_loss", solver="adam", 
                  batch_size="auto", alpha=0.0001, beta1=0.9, 
-                 beta2=0.999, epsilon=1e-8, n_iter_no_change=10):
+                 beta2=0.999, epsilon=1e-8, n_iter_no_change=10, prompt=False):
         super().__init__(hidden_layer_sizes=hidden_layer_sizes, 
                          activation=activation,
                          out_activation=out_activation, 
@@ -325,7 +330,8 @@ class NeuralNetworkClassifier(BasePerceptron):
                          loss=loss, solver=solver,
                          batch_size=batch_size, alpha=alpha,
                          beta1=beta1, beta2=beta2, epsilon=epsilon,
-                         n_iter_no_change=n_iter_no_change)
+                         n_iter_no_change=n_iter_no_change,
+                         prompt=prompt)
 
     def predict(self, X):
         '''
@@ -341,6 +347,12 @@ class NeuralNetworkClassifier(BasePerceptron):
             # 选取概率最高的返回index值
             y_pred = predict_transform(y_pred)
         return y_pred
+
+    def getIterLoss(self):
+        '''
+        api for loss during iteration
+        '''
+        return self.loss_curve_
 
 
 def predict_transform(y):

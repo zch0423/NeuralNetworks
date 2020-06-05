@@ -95,12 +95,15 @@ def array2Label(y):
     return col
 
 class KFold:
-    def __init__(self):
-        #TODO
-        pass
+    def __init__(self, n=2):
+        '''
+        n: n fold
+        '''
+        self.n = n
 
     def split(self, X):
         pass
+
 
 if __name__ == "__main__":
     # X = np.array([np.arange(i,i+5) for i in range(100)])
