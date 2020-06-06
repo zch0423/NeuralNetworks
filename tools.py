@@ -5,6 +5,7 @@ content: some useful tools
 import numpy as np
 from scipy import sparse
 from random import seed, choices
+from scipy.stats import ttest_ind_from_stats
 
 def gen_batches(n, batch_size, min_batch_size=0):
     '''
@@ -104,6 +105,15 @@ class KFold:
     def split(self, X):
         pass
 
+def ttest(mean1, mean2, std1, std2, obs1, obs2=None):
+    '''
+    do t test
+    '''
+    if obs2 is None:
+        obs2 = obs1
+    t, pvalue = ttest_ind_from_stats(mean1=mean1, mean2=mean2, std1=std1,
+                                     std2=std2, nobs1=obs1, nobs2=obs2)
+    print("t statistics:%.4f, p value:%.4f"%(t, pvalue))
 
 if __name__ == "__main__":
     # X = np.array([np.arange(i,i+5) for i in range(100)])

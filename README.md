@@ -22,7 +22,9 @@ Before running, make sure that the csv file of dataset has the corrent path in t
 
 Running the **main.py** file in the project, you can get some output like:
 
-<img src="/Users/zch/Library/Application Support/typora-user-images/image-20200604233841151.png" alt="image-20200604233841151" style="zoom:50%;" />
+<img src="/Users/zch/Desktop/courses/AM218-机器学习/NeuralNetworks/readme_img/image-20200606192309922.png" alt="image-20200606192309922" style="zoom:67%;" />
+
+<img src="/Users/zch/Desktop/courses/AM218-机器学习/NeuralNetworks/readme_img/layers.png" alt="layers" style="zoom:67%;" />
 
 ---
 

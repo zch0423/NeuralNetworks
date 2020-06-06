@@ -321,7 +321,7 @@ class NeuralNetworkClassifier(BasePerceptron):
                  out_activation="softmax", learning_rate=0.001, max_iter=200,
                  tol=1e-4, loss="squared_loss", solver="adam", 
                  batch_size="auto", alpha=0.0001, beta1=0.9, 
-                 beta2=0.999, epsilon=1e-8, n_iter_no_change=10, prompt=False):
+                 beta2=0.999, epsilon=1e-8, n_iter_no_change=20, prompt=False):
         super().__init__(hidden_layer_sizes=hidden_layer_sizes, 
                          activation=activation,
                          out_activation=out_activation, 
