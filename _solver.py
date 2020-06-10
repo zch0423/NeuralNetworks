@@ -1,6 +1,9 @@
 '''
 filename: _solver.py
 content: definition of neural network solver 
+
+#TODO
+增加随机梯度下降solver
 '''
 import numpy as np
 

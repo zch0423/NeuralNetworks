@@ -290,8 +290,11 @@ class BasePerceptron:
         y_pred = activations[-1]
         return y_pred
 
+class NeuralNetworkClassifier:
+    pass 
 
-class NeuralNetworkClassifier(BasePerceptron):
+
+class NeuralNetworkClassifierold(BasePerceptron):
     '''
     implementation of neural network perceptron model
     inherited from BasePerceptron 
