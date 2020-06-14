@@ -15,8 +15,7 @@ from networks import NeuralNetworkClassifier
 from concurrent.futures import ProcessPoolExecutor
 from tools import array2Label, train_test_split, accuracy_score, ttest
 
-# filepath = "datapca_10.csv"
-filepath = "data1_pca20.csv"
+filepath = "datapca_10.csv"
 X, y = dataprocess(filepath)
 
 def oneFit(X, y, activation="relu", hidden_layers=(20, 20), test_size=0.2, loss=False):
@@ -167,9 +166,9 @@ def activationEffect():
 
 def main():
     # a glimpse
-    print(oneFit(X, y, activation="sigmoid", hidden_layers=(100, ), test_size=0.05))
-    # print(poolFit(X, y, activation="relu", hidden_layers=(50, 50)))
-    # print(poolFit(X, y, activation="sigmoid", hidden_layers=(100, )))
+    print(oneFit(X, y, activation="sigmoid", hidden_layers=(100, ), test_size=0.2))
+    # print(poolFit(X, y, activation="relu", hidden_layers=(200, 200)))
+    # print(poolFit(X, y, activation="tanh", hidden_layers=(50, )))
 
     # effect of # of layers and nodes with relu
     # result_layer = layerEffect()

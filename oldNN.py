@@ -1,21 +1,12 @@
-'''
-filename: networks.py
-content:
-    definition of neural network by preceptron model and backpropagation algorithm
-'''
 import numpy as np
 from _functions import ACTIVATIONS, DERIVATIVES, LOSS
 from _solver import AdamOptimizer
 from tools import gen_batches, sparse_dot
 
-
-class NeuralNetworkClassifier:
+class BasePerceptron:
     '''
-    implementation of neural network perceptron model
-    inherited from BasePerceptron
-
-    parameters
-    hidden_layer_sizes: like (100, )
+    base class
+    hidden_layer_sizes: (100, )
     activation: activation function--relu sigmoid softmax tanh
     out_activation: activation function for output--here is softmax
     learning_rate: learning rate for update
@@ -33,13 +24,13 @@ class NeuralNetworkClassifier:
     epsilon  parameters for ADAM algorithm
 
     n_iter_no_change: max number of iterations to not meet acquired tol improvement
-    prompt: bool whether to print information
+    prompt: bool whether to print info
     '''
-    def __init__(self, hidden_layer_sizes=(30, 30), activation="relu",
-                 out_activation="softmax", learning_rate=0.001, max_iter=200,
-                 tol=1e-4, loss="squared_loss", solver="adam", 
-                 batch_size="auto", alpha=0.0001, beta1=0.9, 
-                 beta2=0.999, epsilon=1e-8, n_iter_no_change=20, prompt=False):
+
+    def __init__(self, hidden_layer_sizes, activation,
+                 out_activation, learning_rate, max_iter, tol,
+                 loss, solver, batch_size, alpha, beta1, beta2, epsilon,
+                 n_iter_no_change, prompt):
         self.hidden_layer_sizes = hidden_layer_sizes  # like(100, )
         self.activation = activation
         self.out_activation = out_activation
@@ -297,6 +288,50 @@ class NeuralNetworkClassifier:
         y_pred = activations[-1]
         return y_pred
 
+
+class NeuralNetworkClassifierold(BasePerceptron):
+    '''
+    implementation of neural network perceptron model
+    inherited from BasePerceptron 
+
+    parameters
+    hidden_layer_sizes: like (100, )
+    activation: activation function--relu sigmoid softmax tanh
+    out_activation: activation function for output--here is softmax
+    learning_rate: learning rate for update
+    max_iter: maximum number of iteration
+    tol: tolerance for the model when loss score is not improving
+    loss: loss function--squared loss
+    solver: here we use ADAM algorithm
+    batch_size: 'auto' or int--
+        minibatches for solver
+        auto: batch_size = min(200, n_samples)
+    alpha: L2 penalty parameter
+
+    beta1    parameters for ADAM algorithm
+    beta2    parameters for ADAM algorithm
+    epsilon  parameters for ADAM algorithm
+
+    n_iter_no_change: max number of iterations to not meet acquired tol improvement
+    prompt: bool whether to print information
+    '''
+
+    def __init__(self, hidden_layer_sizes=(30, 30), activation="relu",
+                 out_activation="softmax", learning_rate=0.001, max_iter=200,
+                 tol=1e-4, loss="squared_loss", solver="adam",
+                 batch_size="auto", alpha=0.0001, beta1=0.9,
+                 beta2=0.999, epsilon=1e-8, n_iter_no_change=20, prompt=False):
+        super().__init__(hidden_layer_sizes=hidden_layer_sizes,
+                         activation=activation,
+                         out_activation=out_activation,
+                         learning_rate=learning_rate,
+                         max_iter=max_iter, tol=tol,
+                         loss=loss, solver=solver,
+                         batch_size=batch_size, alpha=alpha,
+                         beta1=beta1, beta2=beta2, epsilon=epsilon,
+                         n_iter_no_change=n_iter_no_change,
+                         prompt=prompt)
+
     def predict(self, X):
         '''
         predict X
@@ -317,13 +352,3 @@ class NeuralNetworkClassifier:
         api for loss during iteration
         '''
         return self.loss_curve_
-
-
-def predict_transform(y):
-    '''
-    transformation of multi outputs
-    pick the node with highest value
-    return index
-    '''
-    return np.array([np.argmax(row) for row in y])
-
