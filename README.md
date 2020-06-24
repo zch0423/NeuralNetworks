@@ -20,11 +20,11 @@ pip3 install -r requirements.txt
 
 Before running, make sure that the csv file of dataset has the corrent path in the project.
 
-Running the **main.py** file in the project, you can get some output like:
+Running the **main.py** file in the project, you can get some outputs like:
 
-<img src="/Users/zch/Desktop/courses/AM218-机器学习/NeuralNetworks/readme_img/image-20200606192309922.png" alt="image-20200606192309922" style="zoom:67%;" />
+<img src="/Users/zch/Desktop/courses/AM218-机器学习/teamProject/projectFIlesGroup4/NeuralNetworks/readme_img/image-20200606192309922.png" alt="image-20200606192309922" style="zoom:50%;" />
 
-<img src="/Users/zch/Desktop/courses/AM218-机器学习/NeuralNetworks/readme_img/layers.png" alt="layers" style="zoom:67%;" />
+<img src="/Users/zch/Desktop/courses/AM218-机器学习/teamProject/projectFIlesGroup4/NeuralNetworks/readme_img/layers.png" alt="layers" style="zoom:36%;" />
 
 ---
 
@@ -59,6 +59,5 @@ Running the **main.py** file in the project, you can get some output like:
 - My teammates, who always support behind and offer help whenever in need
 - Contributors of scikit-sklearn, who provide enlightment in structure design
 - Kingma, Diederik and Jimmy Ba, who introduced the method of adaptive  moment estimation
-- Xavier Glorot and Yoshua Bengio, who introduced the Glorot initialization method
 - Whoever helped when developing the model
 
